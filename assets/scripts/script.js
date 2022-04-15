@@ -6,15 +6,16 @@ function displayTime() {
 }
 //Sets the colour of the time slot based on the time of day
 function pastPresentFuture() {
+    //Added this as I could not get  moment().isSame to work
+    var currentHour = moment().hours();
     for (var theHour = 9; theHour < 18; theHour++) {
         
         var timeSlot = $("#hour-" + theHour + "-text");
-        var i =moment().isSame
-        var timeFromTopOfHour=moment(theHour, "HH").startOf('hour').fromNow(); 
-
+        //var i =moment().isSame
+        //var timeFromTopOfHour=moment(theHour, "HH").startOf('hour').fromNow(); 
         var hourIsAfter = moment(theHour + ":00", "HH:mm").isAfter(moment());
         var hourIsBefore = moment(theHour + ":00", "HH:mm").isBefore(moment());
-        if(timeFromTopOfHour.slice(0,1)<59) {
+        if(currentHour==theHour){
             timeSlot.addClass("present");
         }
         else if (hourIsBefore){
@@ -24,11 +25,9 @@ function pastPresentFuture() {
             timeSlot.addClass("future");
         }
 
-        //timeSlot.addClass("past");    //setAttribute("class", "past");
-        //timeSlot.text(hourIsBefore);
+
         
     }
-    //moment().startOf('hour').fromNow()
 }
 
 //$document.ready(function () {
@@ -51,7 +50,6 @@ function loadFromLocalStorage() {
         timeTextSlot.val(value);
     }
 }
-
 
 displayTime();
 pastPresentFuture();
