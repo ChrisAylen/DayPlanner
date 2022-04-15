@@ -1,9 +1,5 @@
 
 var currentDayEl = $("#currentDay");
-//var nineAmSlot = $("#hour-9-text");
-//var theHour=9;
-//var timeSlot=$("#hour-" + theHour + "-text");
-
 function displayTime() {
     var rightNow = moment().format('MMMM DD, YYYY [at] h a');
     currentDayEl.text(rightNow);
@@ -13,11 +9,12 @@ function pastPresentFuture() {
     for (var theHour = 9; theHour < 18; theHour++) {
         
         var timeSlot = $("#hour-" + theHour + "-text");
+        var i =moment().isSame
+        var timeFromTopOfHour=moment(theHour, "HH").startOf('hour').fromNow(); 
 
-        var hourIsNow = moment(theHour + ":00", "HH:mm").isSame(moment());
         var hourIsAfter = moment(theHour + ":00", "HH:mm").isAfter(moment());
         var hourIsBefore = moment(theHour + ":00", "HH:mm").isBefore(moment());
-        if(hourIsNow) {
+        if(timeFromTopOfHour.slice(0,1)<59) {
             timeSlot.addClass("present");
         }
         else if (hourIsBefore){
@@ -34,10 +31,28 @@ function pastPresentFuture() {
     //moment().startOf('hour').fromNow()
 }
 
-function saveCalendar() {
+//$document.ready(function () {
+$('.saveBtn').on('click', saveCalendar);
 
+
+function saveCalendar(){
+    var value = $(this).siblings('.description').val();
+    var time = $(this).parent().attr('id');
+
+    localStorage.setItem(time, value);
+}
+
+function loadFromLocalStorage() {
+    for (var theHour = 9; theHour < 18; theHour++) {
+        var timeSlot = $("#hour-" + theHour );
+        var timeTextSlot = $("#hour-" + theHour + "-text");
+        var time = timeSlot.attr('id');
+        var value = localStorage.getItem(time);
+        timeTextSlot.val(value);
+    }
 }
 
 
 displayTime();
 pastPresentFuture();
+loadFromLocalStorage();
